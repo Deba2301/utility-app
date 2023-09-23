@@ -1,0 +1,60 @@
+
+<ion-tab-bar slot="top">
+  <ion-tab-button tab="generate-report" selected>
+    <ion-icon name="document-text-outline"></ion-icon>
+    <ion-label>Generate Report</ion-label>
+  </ion-tab-button>
+  
+
+  <ion-tab-button tab="cancel-task" [routerLink]="['/cancelling-task']">
+    <ion-icon name="close-circle-outline"></ion-icon>
+    <ion-label>Cancel Task</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>
+
+<ion-content class="ion-padding centered-square">
+  <ion-card class="custom-card" >
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="stacked" class="input-style">Enter values</ion-label>
+            <ion-input [(ngModel)]="inputValues" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <input type="file" accept=".xlsx, .xls" (change)="handleFileInput($event)">
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="processValues()" [disabled]="!isValidInput() && !fileSelected">
+            Generate report
+          </ion-button>
+        </ion-col>
+      
+        <ion-col class="view-button-col">
+          <!-- New "View List" button to show the list of values from Excel -->
+          <ion-button (click)="viewListFromExcel()" [disabled]="!isValidInput() && !fileSelected" size="small" color="warning">
+            View 
+          </ion-button>
+        </ion-col>
+        
+      </ion-row>
+      <!-- Show the list of processed values when the "View" button is clicked -->
+        <ion-row *ngIf="viewButtonClicked && processedValues.length > 0">
+        <ion-col>
+          <ion-list class="value-grid">
+            <ion-item *ngFor="let value of processedValues; let i = index">
+              {{ value }}
+              <ion-icon name="close-outline" (click)="removeValue(i)" color="danger" slot="end"></ion-icon>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>
